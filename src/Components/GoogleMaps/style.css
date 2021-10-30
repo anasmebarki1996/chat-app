@@ -1,0 +1,12 @@
+.google-maps-description {
+  margin-top: 5px;
+  cursor: pointer;
+}
+.google-maps-description .google-maps-location {
+  color: white;
+}
+
+.google-maps-description .google-maps-link {
+  font-size: 13px;
+  color: #b0b3b8;
+}

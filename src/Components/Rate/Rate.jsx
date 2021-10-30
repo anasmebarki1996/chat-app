@@ -13,7 +13,8 @@ const Rate = () => {
           width="20"
           height="20"
           alt="star"
-          onClick={() => setRate(i)}
+          onClick={() => (rate ? {} : setRate(i))}
+          className={rate ? "disable" : "active"}
         />
       );
     }

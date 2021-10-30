@@ -2,8 +2,10 @@ import React, { useState } from "react";
 const Login = ({ username, setUsername, setIsLogged }) => {
   const [error, setError] = useState("");
   const onSubmit = (e) => {
+    //e.preventDefault() to prevent the reload of the page
     e.preventDefault();
     if (username) {
+      // this condition is to check if the entered data is not only spaces
       if (username.replace(/\s/g, "")) setIsLogged(true);
       else setError("Please check your username");
     } else setError("Please enter your username.");

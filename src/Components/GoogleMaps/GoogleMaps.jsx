@@ -13,6 +13,10 @@ const GoogleMaps = ({ position }) => {
 
   return isLoaded && position ? (
     <div className="google-maps-container">
+      {/* 
+        We use a react library of google maps 
+        Unfortunately i don't have a key api to hide the displayed error 
+       */}
       <GoogleMap mapContainerStyle={containerStyle} center={position} zoom={10}>
         <Marker position={position} />
       </GoogleMap>

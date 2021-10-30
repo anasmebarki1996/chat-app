@@ -10,6 +10,9 @@ const CompleteBox = ({ logout }) => {
       ) : (
         <>
           <div>Do you want to close the conversation ?</div>
+          {/* 
+            if the user click on Yes. He will be logged out
+          */}
           <button onClick={logout}>Yes</button>
           <button onClick={() => setCheckedValue(false)}>No</button>
         </>

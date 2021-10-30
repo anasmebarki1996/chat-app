@@ -6,6 +6,7 @@ const Rate = () => {
   const StarsComponent = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
+      // we should have 5 stars so the loop is to create 5 stars
       stars.push(
         <img
           key={i}

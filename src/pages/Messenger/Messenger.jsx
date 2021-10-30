@@ -7,8 +7,13 @@ import CompleteBox from "../../Components/CompleteBox/CompleteBox";
 const socket = io.connect("https://demo-chat-server.on.ag/");
 
 const Messenger = ({ username, logout }) => {
+  // message is the variable of entered message by the user
   const [message, setMessage] = useState("");
+
+  // arrayComponent contains the components of the chat
   const [arrayComponent, setArrayComponent] = useState([]);
+
+  // messengerRef is a reference to make the scroll bar to down on the bottom when we sent or receive a new message
   const messengerEndRef = useRef(null);
 
   const SentMessage = ({ message }) => {
@@ -72,14 +77,23 @@ const Messenger = ({ username, logout }) => {
   }, [arrayComponent]);
 
   const onMessageSubmit = (e) => {
+    // this condition is to prevent the reload of the page if we click on enter "KEYBOARD"
+    // Else we don't have to prevent the reload because we click on the the right icon
     if (e) e.preventDefault();
+
+    // this condition is to check if entered message is not only spaces. EX : "    "
     if (message.replace(/\s/g, "")) {
+      // When the user submit the message it should show his message on the right
       setArrayComponent((prevState) => [
         ...prevState,
         <SentMessage message={message} />,
       ]);
+
+      // when the user submit the message. we trigger the  events message & command
       socket.emit("message", { author: username, message });
       socket.emit("command");
+
+      // after that we add the sent message to SentMessage. We clear the input to let user write another message
       setMessage("");
     }
   };

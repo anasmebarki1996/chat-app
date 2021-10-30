@@ -2,26 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import SuppliedDate from "../../Components/SuppliedDate/SuppliedDate";
 import GoogleMaps from "../../Components/GoogleMaps/GoogleMaps";
-import "./style.css";
 import Rate from "../../Components/Rate/Rate";
 import CompleteBox from "../../Components/CompleteBox/CompleteBox";
 const socket = io.connect("https://demo-chat-server.on.ag/");
 
-const Messenger = ({ username }) => {
+const Messenger = ({ username, logout }) => {
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
-
-  const renderChat = () => {
-    return chat.map(({ message, transmissionType, type }, index) => (
-      <div key={index}>
-        {transmissionType === "sent" ? (
-          <SentMessage message={message} />
-        ) : (
-          <ReceivedMessage message={message} type={type} />
-        )}
-      </div>
-    ));
-  };
+  const [arrayComponent, setArrayComponent] = useState([]);
+  const messengerEndRef = useRef(null);
 
   const SentMessage = ({ message }) => {
     return (
@@ -49,9 +37,9 @@ const Messenger = ({ username }) => {
           ) : type === "rate" ? (
             <Rate data={message} />
           ) : type === "complete" ? (
-            <CompleteBox />
+            <CompleteBox logout={logout} />
           ) : (
-            <h1>ccc</h1>
+            <></>
           )}
         </div>
       </div>
@@ -60,62 +48,35 @@ const Messenger = ({ username }) => {
 
   useEffect(() => {
     socket.on("message", ({ author, message }) => {
-      setChat((prevState) => [
+      setArrayComponent((prevState) => [
         ...prevState,
-        {
-          message,
-          transmissionType: "received",
-          type: "message",
-        },
+        <ReceivedMessage message={message} type={"message"} />,
       ]);
     });
 
     socket.on("command", ({ command }) => {
       const { type, data } = command;
-      setChat((prevState) => [
+      setArrayComponent((prevState) => [
         ...prevState,
-        {
-          message: data,
-          transmissionType: "received",
-          type,
-        },
+        <ReceivedMessage message={data} type={type} />,
       ]);
     });
   }, [socket]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [chat]);
-
-  const mapFunction = ({ lat, lng }) => {
-    return <GoogleMaps position={{ lat, lng }} />;
-  };
-
-  const rateFunction = (data) => {
-    console.log("###########################");
-    console.log(data);
-  };
-
-  const completeFunction = () => {};
-
-  const onTextChange = (e) => {
-    setMessage(e.target.value);
-  };
-  const messengerEndRef = useRef(null);
   const scrollToBottom = () => {
     messengerEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [arrayComponent]);
+
   const onMessageSubmit = (e) => {
     if (e) e.preventDefault();
     if (message.replace(/\s/g, "")) {
-      setChat((prevState) => [
+      setArrayComponent((prevState) => [
         ...prevState,
-        {
-          author: username,
-          message,
-          transmissionType: "sent",
-        },
+        <SentMessage message={message} />,
       ]);
       socket.emit("message", { author: username, message });
       socket.emit("command");
@@ -123,29 +84,26 @@ const Messenger = ({ username }) => {
     }
   };
 
-  const profile = () => {
-    return (
-      <div className="profile-container">
-        <div className="icon"> BT</div>
-        <div className="name"> Ottonova</div>
-        <div className="app-name"> Chat App</div>
-      </div>
-    );
-  };
-
   return (
     <div className="messenger-container">
+      <div className="logout-container" onClick={logout}>
+        logout <img src="assets/logout.png" alt="log out" width="20" />
+      </div>
       <div className="content">
         <div>
-          {profile()}
-          {renderChat()}
-          <div ref={messengerEndRef}></div>
+          <div className="profile-container">
+            <div className="icon"> BT</div>
+            <div className="name"> Ottonova</div>
+            <div className="app-name"> Chat App</div>
+          </div>
+          {arrayComponent}
+          <div style={{ margin: 20 }} ref={messengerEndRef}></div>
         </div>
       </div>
       <form onSubmit={onMessageSubmit}>
         <input
           name="message"
-          onChange={onTextChange}
+          onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder="Aa"
         />

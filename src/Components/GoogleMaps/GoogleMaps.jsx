@@ -1,8 +1,7 @@
 import React from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
-import "./style.css";
 const containerStyle = {
-  width: "300px",
+  width: "100%",
   height: "156px",
 };
 
@@ -13,7 +12,7 @@ const GoogleMaps = ({ position }) => {
   });
 
   return isLoaded && position ? (
-    <>
+    <div className="google-maps-container">
       <GoogleMap mapContainerStyle={containerStyle} center={position} zoom={10}>
         <Marker position={position} />
       </GoogleMap>
@@ -25,13 +24,14 @@ const GoogleMaps = ({ position }) => {
           "," +
           position.lng
         }
+        rel="noreferrer"
       >
         <div className="google-maps-description">
           <div className="google-maps-location"> Our location</div>
           <div className="google-maps-link"> google.com</div>
         </div>
       </a>
-    </>
+    </div>
   ) : (
     <></>
   );

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import GoogleMaps from "../../Components/GoogleMaps/GoogleMaps";
-import "./style.css";
 const Login = ({ username, setUsername, setIsLogged }) => {
   const [error, setError] = useState("");
   const onSubmit = (e) => {
@@ -21,7 +19,7 @@ const Login = ({ username, setUsername, setIsLogged }) => {
   return (
     <div className="login-container">
       <form onSubmit={onSubmit}>
-        <div className="title">Messenger App</div>
+        <div className="title">Chat App</div>
         <div className="input-container">
           <input
             className={error ? "error" : ""}

@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
-const CompleteBox = () => {
+const CompleteBox = ({ logout }) => {
+  const [checkedValue, setCheckedValue] = useState(null);
+
   return (
-    <div>
-      <button>Yes</button>
-      <button>No</button>
-      <div>please click on a button</div>
+    <div className="complete-box-container">
+      {checkedValue === false ? (
+        <div>You have selected to continue on this conversation</div>
+      ) : (
+        <>
+          <div>Do you want to close the conversation ?</div>
+          <button onClick={logout}>Yes</button>
+          <button onClick={() => setCheckedValue(false)}>No</button>
+        </>
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import React, { useState, useEffect } from "react";
 
 const SuppliedDate = ({ date }) => {
+  const [selectedDate, setSelectedDate] = useState(null);
   const orderDays = (date) => {
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     let selectedDay = new Date(date).getDay() - 1;
@@ -21,14 +21,28 @@ const SuppliedDate = ({ date }) => {
     setSuppliedDate(orderDays(date));
   }, []);
 
-  console.log(suppliedDate);
-
   return (
-    <div>
-      {suppliedDate.map((item) => (
-        <button>{item}</button>
-      ))}
-      <div className=""> please choose a day</div>
+    <div className="supplied-date-container">
+      {selectedDate ? (
+        <div className="selected-text">
+          you have selected <b>{selectedDate}</b>
+        </div>
+      ) : (
+        <>
+          <div className="text"> please pick up a day</div>
+          <div className="days-button">
+            {suppliedDate.map((item) => (
+              <button
+                key={item}
+                disabled={selectedDate === item}
+                onClick={() => setSelectedDate(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

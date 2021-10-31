@@ -10,4 +10,4 @@ The project is created by React JS and has following features:
 
 ## Run application
 
-Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm install && npm start` to run the application. The app will automatically open on `http://localhost:4200/`.
